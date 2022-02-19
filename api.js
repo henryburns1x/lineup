@@ -1,10 +1,10 @@
-//require('dotenv').config()
+require('dotenv').config()
 
 const express = require('express');
 const config = require('./config.js');
 
 const mongoose = require('mongoose');
-//mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI);
 
 const router = express.Router();
 
