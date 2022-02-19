@@ -1,0 +1,19 @@
+{
+  "name": "lineup",
+  "version": "1.0.0",
+  "description": " A schedule builder that connects you and those around you.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1baller4God/lineup.git"
+  },
+  "author": "Team Alpha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1baller4God/lineup/issues"
+  },
+  "homepage": "https://github.com/1baller4God/lineup#readme"
+}
