@@ -4,7 +4,8 @@
   "description": " A schedule builder that connects you and those around you.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "nodemon server.js",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/1baller4God/lineup/issues"
   },
-  "homepage": "https://github.com/1baller4God/lineup#readme"
+  "homepage": "https://github.com/1baller4God/lineup#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "helmet": "^5.0.2",
+    "mongoose": "^6.2.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.15"
+  }
 }
