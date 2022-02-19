@@ -12,11 +12,13 @@ html, body {
     padding: 0;
     margin: 0;
 
+    box-sizing: border-box;
+
 }
 
 #left_container {
 
-    width: 15%;
+    width: 10%;
     height: 100%;
 
     background-color: blue;
@@ -32,24 +34,62 @@ html, body {
 
 }
 
+
 #navigation_container {
 
     width: 100%;
     height: 80%;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 10px 0 10px 0;
+
     background-color: pink;
 
 }
 
+#navigation_inner_container {
+
+    width: 70px;
+    height: 100%;
+
+    border-radius: 6px;
+
+    background-color: white;
+}
+
 #middle_container {
 
-    width: 60%;
+    width: 65%;
     height: 100%;
 
     background-color: green;
     float: left;
 
+    display: flex;
+    flex-direction: column;
 }
+
+#profile_container {
+
+    width: 100%;
+    height: 20%;
+
+    background-color: yellow;
+
+}
+
+#calendar_container {
+
+    width: 100%;
+    flex: 1;
+
+    background-color: grey;
+
+}
+
 
 #right_container {
 

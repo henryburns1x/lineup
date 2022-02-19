@@ -13,11 +13,16 @@ function create_home() {
 
             <div id="logo_container">
 
-                
+
 
             </div> 
 
             <div id="navigation_container">
+
+                <div id="navigation_inner_container">
+
+
+                </div> 
 
             </div> 
 
@@ -26,8 +31,26 @@ function create_home() {
 
         <div id="middle_container">
 
+            <div id="profile_container">
+
+                <div id="profile_container">
 
 
+                </div> 
+
+
+            </div> 
+
+            <div id="recommendation_container">
+
+
+            </div> 
+
+            <div id="calendar_container">
+
+                
+
+            </div> 
 
         </div> 
 
