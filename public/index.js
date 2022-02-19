@@ -33,15 +33,13 @@ function create_home() {
 
             <div id="profile_container">
 
-                <div id="profile_container">
+                <div id="profile_icon_container">
 
+                    <div id="profile_icon">
+s
+                    </div> 
 
                 </div> 
-
-
-            </div> 
-
-            <div id="recommendation_container">
 
 
             </div> 
@@ -56,6 +54,11 @@ function create_home() {
 
         <div id="right_container">
 
+
+            <div id="recommendation_container">
+
+
+            </div> 
 
 
 
