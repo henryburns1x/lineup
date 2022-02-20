@@ -1,6 +1,5 @@
 const body_parser = require('body-parser');
 const config = require('./config.js');
-const mongoose = require('mongoose');
 const express = require('express');
 const logger = require('morgan');
 const helmet = require('helmet');
@@ -27,14 +26,4 @@ app.listen(config.PORT, () => {
 
 	console.log(`Server Is Up! ${config.ORIGIN} PORT: ${config.PORT}`);
 
-});
-
-
-// connect to mongodb database
-db_url = `mongodb://localhost/lineup`;
-mongoose.connect(db_url, { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connection.once('open', function () {
-	console.log('Connected to MongoDB.');
-}).on('error', function (error) {
-	console.log('Unable to connect to MongodDB: ', error);
 });

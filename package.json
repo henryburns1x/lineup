@@ -20,6 +20,7 @@
   "dependencies": {
     "express": "^4.17.3",
     "helmet": "^5.0.2",
+    "mongodb": "^4.4.0",
     "mongoose": "^6.2.2",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15"

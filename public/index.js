@@ -67,8 +67,9 @@ function create_home() {
 
                     <div id="profile_quote_container">
             
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has survived not only five centuries, but 
-
+                        “Nothing is impossible. The word itself says ‘I’m possible!'”
+                        <br>
+                        — Audrey Hepburn
                     </div> 
 
                 </div> 
@@ -78,6 +79,14 @@ function create_home() {
                     <div id="profile_friends_header">
 
                         Friends
+
+                    </div> 
+
+                    <div id="profile_friends_search_container">
+
+                        <input placeholder="Search ..." id="profile_friends_search"/>
+
+                        <button id="profile_friends_search_button">🔎</button>
 
                     </div> 
 
@@ -157,7 +166,7 @@ function create_calendar() {
             let empty = (i % 2 == 0) ? true : false
 
             let block = document.createElement('div')
-            block.setAttribute('class', `block ${empty ? 'empty' : '' }`)
+            block.setAttribute('class', `block ${empty ? 'empty' : ''}`)
 
             let block_start_time = document.createElement('div')
             block_start_time.setAttribute('class', `block_start_time`)
@@ -195,14 +204,109 @@ function create_calendar() {
 // Create the recommendation
 function create_recommendation() {
 
-    for (let i = 0; i < 10; i++) {
+    let url = `/api/user/recommendation`;
 
-        let recommendation = document.createElement('div')
-        recommendation.setAttribute('class', 'recommendation')
+    email = 'yolo'
 
-        document.getElementById('recommendation_inner_container').append(recommendation)
+    let data = {
 
+        email: email,
+ 
     }
+
+    fetch(url, {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(result => {
+
+        return result.json()
+    })
+    .then(data => {
+
+        let matching_times = data.matching_times || []
+
+        for (let i = 0; i < matching_times.length; i++) {
+
+            let recommendation = document.createElement('div')
+            recommendation.setAttribute('class', 'recommendation')
+    
+            let recommendation_profile_container = document.createElement('div')
+            recommendation_profile_container.setAttribute('class', 'recommendation_profile_container')
+    
+            let recommendation_profile_image_container = document.createElement('div')
+            recommendation_profile_image_container.setAttribute('class', 'recommendation_profile_image_container')
+    
+            let recommendation_profile_image = document.createElement('img')
+            recommendation_profile_image.setAttribute('class', 'recommendation_profile_image')
+            recommendation_profile_image.setAttribute('src', '')
+    
+            recommendation_profile_image_container.append(recommendation_profile_image)
+    
+            let recommendation_profile_name_container = document.createElement('div')
+            recommendation_profile_name_container.setAttribute('class', 'recommendation_profile_name_container')
+    
+            let recommendation_profile_name = document.createElement('p')
+            recommendation_profile_name.setAttribute('class', 'recommendation_profile_name')
+            recommendation_profile_name.textContent = 'Lebron James'
+    
+            recommendation_profile_name_container.append(recommendation_profile_name)
+    
+            recommendation_profile_container.append(recommendation_profile_image_container, recommendation_profile_name_container)
+    
+            // Date section
+            let recommendation_subject_container = document.createElement('div')
+            recommendation_subject_container.setAttribute('class', 'recommendation_date_container')
+    
+            let recommendation_subject = document.createElement('input')
+            recommendation_subject.setAttribute('class', 'recommendation_subject')
+            recommendation_subject.setAttribute('placeholder', 'Let\'s hang out')
+    
+            recommendation_subject_container.append(recommendation_subject)
+    
+            // Date section
+            let recommendation_date_container = document.createElement('div')
+            recommendation_date_container.setAttribute('class', 'recommendation_date_container')
+    
+            let recommendation_date = document.createElement('p')
+            recommendation_date.setAttribute('class', 'recommendation_date')
+            recommendation_date.textContent = 'Mon'
+    
+            let recommendation_time = document.createElement('p')
+            recommendation_time.setAttribute('class', 'recommendation_time')
+            recommendation_time.textContent = '⏰ 06:00am to 08:30am'
+    
+            recommendation_date_container.append(recommendation_date, recommendation_time)
+    
+            // Options section
+            let recommendation_options_container = document.createElement('div')
+            recommendation_options_container.setAttribute('class', 'recommendation_options_container')
+    
+            let recommendation_cancel = document.createElement('button')
+            recommendation_cancel.setAttribute('class', 'recommendation_cancel')
+            recommendation_cancel.textContent = '(X) Cancel'
+    
+            let recommendation_ok = document.createElement('button')
+            recommendation_ok.setAttribute('class', 'recommendation_ok')
+            recommendation_ok.textContent = 'Invite'
+    
+            recommendation_options_container.append(recommendation_cancel, recommendation_ok)
+    
+            recommendation.append(recommendation_profile_container, recommendation_subject_container, recommendation_date_container, recommendation_options_container)
+    
+            document.getElementById('recommendation_inner_container').append(recommendation)
+    
+        }
+    
+
+    })
+    .catch(error => alert(error))
+
+
 
 }
 
@@ -239,3 +343,191 @@ function create_friends() {
     }
 
 }
+
+// Create Sign up & In popup
+function create_welcome(email, username, password) {
+
+    let html = `
+        
+
+    
+    `
+
+    // let emial = document.getElementById('email').value
+    // let username = document.getElementById('username').value
+    // let password = document.getElementById('password').value
+
+    let url = `/api/user/sign_up`;
+
+    let data = {
+
+        email: email,
+        username: username,
+        password: password
+
+    }
+
+    fetch(url, {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(result => {
+
+        return result.json()
+    })
+    .then(data => {
+
+        console.log(data)
+
+    })
+    .catch(error => alert(error))
+
+}
+
+// Read the user calendar
+function read_calendar() {
+
+    let url = `/api/user/read_calendar`;
+
+    email = 'yolo'
+
+    let data = {
+
+        email: email,
+ 
+    }
+
+    fetch(url, {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(result => {
+
+        return result.json()
+    })
+    .then(data => {
+
+        console.log(data)
+
+    })
+    .catch(error => alert(error))
+
+}
+
+// Update the user calendar
+function update_calendar(email, calendar_index, color, message, please_remove) {
+
+    let url = `/api/user/update_calendar`;
+
+    let data = {
+
+        email: email,
+        calendar_index: calendar_index,
+        item: (please_remove == false) ? {
+            color: color, 
+            message: message
+        } : null
+
+    }
+
+    fetch(url, {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(result => {
+
+        return result.json()
+    })
+    .then(data => {
+
+        console.log(data)
+
+    })
+    .catch(error => alert(error))
+
+}
+
+// Add the user friend
+function add_friend(email, friend_username) {
+
+    let url = `/api/user/add_friend`;
+
+    let data = {
+
+        email: email,
+        friend_username: friend_username,
+
+    }
+
+    fetch(url, {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(result => {
+
+        return result.json()
+    })
+    .then(data => {
+
+        console.log(data)
+
+    })
+    .catch(error => alert(error))
+
+}
+
+// Remove the user friend
+function remove_friend(email, friend_username) {
+
+    let url = `/api/user/remove_friend`;
+
+    let data = {
+
+        email: email,
+        friend_username: friend_username,
+
+    }
+
+    fetch(url, {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(result => {
+
+        return result.json()
+    })
+    .then(data => {
+
+        console.log(data)
+
+    })
+    .catch(error => alert(error))
+
+}
+
+
+// remove_friend('yolo', 'checky')
+// create_welcome('bob', 'checky', '1234')
+// update_calendar('bob', 0, 1, 'Bob', false)
+
+// read_calendar()
