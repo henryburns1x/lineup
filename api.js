@@ -22,7 +22,15 @@ router.post('/user/sign_up', (request, response) => {
         email: email,
         username: username,
         password: password,
-        calendar: new Array(336).fill(null),
+        calendar: [
+            new Array(48).fill(null),
+            new Array(48).fill(null),
+            new Array(48).fill(null),
+            new Array(48).fill(null),
+            new Array(48).fill(null),
+            new Array(48).fill(null),
+            new Array(48).fill(null),
+        ],
         friends: []
     };
 
@@ -76,6 +84,7 @@ router.post('/user/update_calendar', (request, response) => {
     let email = request.body.email
     let item = request.body.item
     let calendar_index = request.body.calendar_index
+    let calendar_day_index = request.body.calendar_day_index
 
     // Check if email & username exists
     MongoClient.connect(db_url, function (err, db) {
@@ -90,7 +99,7 @@ router.post('/user/update_calendar', (request, response) => {
             if (result.length > 0) {
 
                 let calendar = result[0].calendar
-                calendar[calendar_index] = item
+                calendar[calendar_day_index][calendar_index] = item
 
                 let newvalues = { $set: { calendar: calendar } };
 
@@ -147,7 +156,6 @@ router.post('/user/read_calendar', (request, response) => {
             if (result.length > 0) {
 
                 calendar = result[0].calendar
-
             }
 
             db.close()
@@ -213,20 +221,31 @@ router.post('/user/recommendation', (request, response) => {
 
                     for (let j = 0; j < friend_calendar.length; j++) {
 
-                        if (friend_calendar[j] == null && friend_calendar[j] == calendar[j]) {
+                        for (let k = 0; k < friend_calendar[j].length; k++) {
 
-                            matching_times.push(j)
+                            if (friend_calendar[j][k] == null && friend_calendar[j][k] == calendar[j][k]) {
+
+                                matching_times.push({ day: j, time: k, friend: friends[i] })
+
+                            }
 
                         }
 
                     }
 
-                    console.log(friend_calendar)
                 }
 
+                let seected_matching_times = []
+                // A.I 
+                for (let i = 0; i < 5; i++) {
+
+                    seected_matching_times.push(matching_times[Math.floor(Math.random() * matching_times.length)])
+                }
+
+        
                 response.json({
 
-                    matching_times: matching_times,
+                    matching_times: seected_matching_times,
 
                 })
 
@@ -246,6 +265,89 @@ router.post('/user/recommendation', (request, response) => {
     });
 
 });
+
+// Find user
+router.post('/user/find_friend', (request, response) => {
+
+    // Get users email
+    let username = request.body.username
+
+    // Check if email & username exists
+    MongoClient.connect(db_url, function (err, db) {
+        if (err) throw err;
+        let dbo = db.db(db_name);
+        let query = { username: username };
+        dbo.collection("users").find(query).toArray(function (err, result) {
+
+            if (err) throw err;
+
+            // If the email or username exists
+            if (result.length > 0) {
+
+                response.json({
+
+                    friend: result[0].username,
+
+                })
+
+                return
+            }
+
+            db.close()
+
+            response.json({
+
+                friend: null,
+
+            })
+
+
+        });
+    });
+
+});
+
+// Find friends
+router.post('/user/find_friends', (request, response) => {
+
+    // Get users email
+    let email = request.body.email
+
+    // Check if email & username exists
+    MongoClient.connect(db_url, function (err, db) {
+        if (err) throw err;
+        let dbo = db.db(db_name);
+        let query = { email: email };
+        dbo.collection("users").find(query).toArray(function (err, result) {
+
+            if (err) throw err;
+
+            // If the email or username exists
+            if (result.length > 0) {
+
+                response.json({
+
+                    friends: result[0].friends,
+
+                })
+
+                return
+            }
+
+            db.close()
+
+            response.json({
+
+                friends: [],
+
+            })
+
+
+        });
+    });
+
+});
+
 
 // Add to user friends
 router.post('/user/add_friend', (request, response) => {
