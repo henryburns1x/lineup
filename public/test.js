@@ -9,9 +9,7 @@ window.onload = function () {
 
 }
 
-// Start the application
 function start_app() {
-
     create_home()
     create_calendar(null)
     create_recommendation()
@@ -24,14 +22,6 @@ function start_app() {
         find_friend(profile_friends_search.value)
 
     }
-
-    logout.onclick = function () {
-
-        localStorage.clear()
-        location.reload()
-    
-    }
-
 }
 
 // Create the login page
@@ -156,8 +146,7 @@ function create_login() {
 
                 localStorage.setItem('username', container_username_container.value)
                 localStorage.setItem('email', container_email_container.value)
-                
-                location.reload()
+                start_app()
 
             })
             .catch(error => alert(error))
@@ -208,9 +197,6 @@ function create_home() {
 
                     <div class="navigation_option">
                         📙
-                    </div>
-                    <div class="navigation_option" id="logout">
-                        🚪
                     </div>
 
                 </div> 
@@ -297,10 +283,10 @@ function create_home() {
 
                 <ul id="extra_text_container">
 
-                    <li>Help users spend more time with friends and family ✅</li>
-                    <li>Get your life organized ✅</li>
-                    <li>Make friends who will hold you accountable to your schedule ✅</li>
-                    <li>Let LineUp schedule your dates and meetups for you ✅</li>
+                    <li>Help users spend more time with friends and family</li>
+                    <li>Get your life organized</li>
+                    <li>Make friends who will hold you accountable to your schedule</li>
+                    <li>Let LineUp schedule your dates and meetups for you</li>
 
                     
                 </ul> 
@@ -1030,3 +1016,9 @@ function remove_friend(friend_username) {
         .catch(error => alert(error))
 
 }
+
+
+// create_welcome('bob', 'bob', 'bob')
+// remove_friend('yolo', 'checky')
+// update_calendar(3, 2, 1, 'Lucky!! Really Long textx', false)
+

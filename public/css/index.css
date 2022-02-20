@@ -55,6 +55,18 @@ button {
 
 }
 
+#logo {
+
+    width: 50px;
+    height: 50px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+}
+
 
 #navigation_container {
 
@@ -91,6 +103,13 @@ button {
     font-size: 20px;
 
     border-bottom: 1px solid #e8e8e8;
+    cursor: pointer;
+
+}
+
+.navigation_option:hover {
+
+    font-size: 25px;
 
 }
 
@@ -303,6 +322,7 @@ li {
 
     background-color: #f5f5f5;
     margin-bottom: 10px;
+    margin-top: 10px;
 
 }
 
@@ -553,6 +573,7 @@ li {
     padding: 10px;
 
 }
+
 
 .block.empty {
 
