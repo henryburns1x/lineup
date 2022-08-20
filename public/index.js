@@ -39,6 +39,9 @@ function create_login() {
 
     if (localStorage.getItem('email') != null) {
 
+        // For summer scedule of 2022 (Before Jam blew up and went crazy) 
+        // email = 'melvin'
+
         email = localStorage.getItem('email')
 
         start_app()
@@ -276,9 +279,13 @@ function create_home() {
             </div> 
 
 
-            <div id="calendar_container">
+            <div id="contained_calendar_container">
 
-                
+                <div id="calendar_container">
+
+                    
+
+                </div> 
 
             </div> 
 
@@ -467,7 +474,7 @@ function create_block(day, time, block) {
     container_message_container.setAttribute('id', 'container_message_container')
     container_message_container.setAttribute('contenteditable', true)
     container_message_container.setAttribute('data-ph', 'Add a description of your task')
-    container_message_container.textContent = message
+    container_message_container.innerHTML = message
 
     container_inner_container.append(container_message_container)
 
@@ -493,7 +500,7 @@ function create_block(day, time, block) {
     container_update_button.textContent = 'Update'
     container_update_button.onclick = function () {
 
-        update_calendar(day, time, 0, container_message_container.textContent, false)
+        update_calendar(day, time, 0, container_message_container.innerHTML, false)
 
     }
 
@@ -504,6 +511,21 @@ function create_block(day, time, block) {
     outer_container.append(container)
 
     document.body.append(overlay, outer_container)
+
+    container_message_container.focus()
+}
+
+
+// Remove the block
+function remove_block() {
+
+    if(document.getElementById('overlay')) {
+        document.getElementById('overlay').remove()
+    }
+
+    if(document.getElementById('outer_container')) {
+        document.getElementById('outer_container').remove()
+    }
 }
 
 // Create the recommendation
@@ -642,7 +664,7 @@ function create_recommendation() {
 }
 
 // Cretae the calendar
-function create_calendar(calendar) {
+function create_calendar(calendar, is_editing) {
 
     document.getElementById('calendar_container').innerHTML = ''
 
@@ -679,6 +701,7 @@ function create_calendar(calendar) {
             let block = document.createElement('div')
             block.setAttribute('class', `block ${empty ? 'empty' : ''}`)
             block.setAttribute('data-day', i)
+            block.setAttribute('id', `${days[i]}_${get_time(j)}`)
             block.setAttribute('data-time', j)
             let color_style = (2 == 5 && empty == false) ? `background-color: ${colors[calendar[i][j].color]}` : ''
             block.setAttribute('style', `${empty ? '' : color_style}`)
@@ -690,18 +713,21 @@ function create_calendar(calendar) {
             let block_activity = document.createElement('div')
             block_activity.setAttribute('class', `block_activity`)
             if (empty == false) {
-                block_activity.textContent = calendar[i][j].message
+                block_activity.innerHTML = calendar[i][j].message
             }
 
             let block_stop_time = document.createElement('div')
             block_stop_time.setAttribute('class', `block_stop_time`)
             block_stop_time.textContent = get_time(j + 1)
 
-            if (empty == false) {
+            if (empty == true) {
 
-                block.append(block_start_time, block_activity, block_stop_time)
+                block_activity.classList.add('empty')
 
             }
+
+            block.append(block_start_time, block_activity, block_stop_time)
+
 
             block.onclick = function () {
 
@@ -720,6 +746,60 @@ function create_calendar(calendar) {
 
         day.append(day_title, day_content)
         document.getElementById('calendar_container').append(day)
+
+    }
+
+    let roundTime = (time, minutesToRound) => {
+
+        let [hours, minutes] = time.split(':');
+        hours = parseInt(hours)
+        minutes = parseInt(minutes)
+
+        // Convert hours and minutes to time in minutes
+        time =((hours * 60) + minutes)
+
+        let rounded = (Math.round(time / minutesToRound) * minutesToRound)
+        let rHr = ''+Math.floor(rounded / 60)
+        let rMin = ''+ rounded % 60
+
+        return rHr.padStart(2, '0')+':'+rMin.padStart(2, '0')
+    }
+
+    const d = new Date()
+    let day = days[d.getDay()]
+    let hour = d.getHours()
+    let minutes = d.getMinutes()
+    let time_string = roundTime(`${hour}:${minutes}`, 30)
+    document.getElementById(`${day}_${time_string}`).style = 'border: 3px dashed red'
+    document.getElementById(`${day}_${time_string}`).querySelector('.block_start_time').style = 'color: red'
+    document.getElementById(`${day}_${time_string}`).querySelector('.block_stop_time').style = 'color: red'
+
+    // Update every minute
+    setInterval(function(){
+
+        // Remove from previous block
+        document.getElementById(`${day}_${time_string}`).style = ''
+        document.getElementById(`${day}_${time_string}`).querySelector('.block_start_time').style = ''
+        document.getElementById(`${day}_${time_string}`).querySelector('.block_stop_time').style = ''
+    
+        new_d = new Date()
+        hour = new_d.getHours()
+        minutes = new_d.getMinutes()
+
+        // The time stirng is the current time rounded to 30 minutes
+        time_string = roundTime(`${hour}:${minutes}`, 30)
+
+        // Identify the time period
+        document.getElementById(`${day}_${time_string}`).style = 'border: 3px dashed red'
+        document.getElementById(`${day}_${time_string}`).querySelector('.block_start_time').style = 'color: red'
+        document.getElementById(`${day}_${time_string}`).querySelector('.block_stop_time').style = 'color: red'
+    
+    }, 1000)
+
+    // Don't scroll to current time if create calendar is called because of an edit
+    if (is_editing != true) {
+
+        document.getElementById(`${day}_${time_string}`).scrollIntoView()
 
     }
 }
@@ -824,7 +904,6 @@ function read_calendar() {
             create_calendar(calendar)
 
 
-
         })
         .catch(error => alert(error))
 
@@ -861,7 +940,13 @@ function update_calendar(calendar_day_index, calendar_index, color, message, ple
         })
         .then(data => {
 
-            location.reload()
+            let calendar = data.calendar || []
+
+            create_calendar(calendar, true)
+
+            // Remove the block popup
+            remove_block()
+
 
         })
         .catch(error => alert(error))
